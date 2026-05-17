@@ -28,14 +28,21 @@
 
 ## Build (Linux)
 
+On a fresh system, install compile dependencies first (uses apt, dnf, zypper, or pacman):
+
 ```bash
+make deps          # CMake, Qt6, toolchain, bzip2, libvirt headers
+make deps-runtime  # optional: QEMU for testing VMs
 make
 sudo make install
 ```
 
+If `cmake` is not installed, `make` will try to run `make deps` for you (sudo may be required).
+
 Embedded VNC + SPICE (requires LibVNCServer):
 
 ```bash
+make deps-full
 make full
 sudo make install
 ```

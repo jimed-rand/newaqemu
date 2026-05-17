@@ -2,6 +2,7 @@
 
 ## Build
 
+- [ ] `make deps` installs CMake/Qt6 toolchain on this distro
 - [ ] `make` (minimal) and `build/newaqemu --version` prints `newaqemu 1.0.0`
 - [ ] `make help` lists targets
 - [ ] `cmake -B build -DWITHOUT_EMBEDDED_DISPLAY=on && cmake --build build` (or `make` only)

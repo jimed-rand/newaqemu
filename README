@@ -54,14 +54,18 @@ BUILD AND INSTALL (Linux)
   1. Extract or clone the source, then:
 
        cd newaqemu
+       make deps          # first time: install CMake, Qt6, compiler, etc.
+       make deps-runtime  # optional: QEMU for testing
        make
        sudo make install
 
      Embedded VNC + SPICE (requires LibVNCServer):
 
+       make deps-full
        make full
        sudo make install
 
+     If cmake is missing, "make" runs "make deps" automatically.
      Run "make help" for other targets and variables (PREFIX, JOBS, CMAKE_ARGS).
 
   2. Run:  newaqemu
