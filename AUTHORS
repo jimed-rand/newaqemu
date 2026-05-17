@@ -1,0 +1,67 @@
+newaqemu — authors and maintainers
+==================================
+
+newaqemu (this fork)
+--------------------
+
+James "Jim" Ed Randson <jimedrand@disroot.org>
+    Maintainer (2026–present)
+    Qt6 / C++17 port, hybrid QEMU/libvirt backends, GPU passthrough
+    host integration, Windows build, legacy AQEMU import
+
+
+AQEMU (upstream)
+----------------
+
+Andrey Rijov <ANDron142@yandex.ru>
+    Original author of AQEMU (2008–2010)
+
+Tobias Gläßer
+    AQEMU maintainer and developer (from 0.9.0 through 0.9.2)
+
+
+Notable AQEMU contributors
+--------------------------
+
+The following people contributed patches, packaging, translations, or
+other work that remains in this codebase. See src/About_Window.cpp and
+CHANGELOG for additional names and credits.
+
+Ben Klopfenstein <benklop@gmail.com>
+    Embedded VNC display (code from QtEMU / Krdc lineage)
+
+Eli Carter
+    Intel HDA and CS4231A sound support patches
+
+Timothy Redaelli
+    CMake build system patches
+
+Guillem Rieu
+    Network redirection patch
+
+Karol Krenski
+    IP address regular-expression fix
+
+Robert Warnke
+    German documentation translation
+
+Michael Schmöller (schmoemi)
+    German translation; English translation corrections
+
+Pavel Serebryakov (Kronoph)
+    English translation corrections
+
+Max Brazhnikov          FreeBSD port
+Boris Savelev           ALT Linux packaging
+Denis Smirnov (reMiND)  Arch Linux packaging
+Ignace Mouzannar        Debian packaging
+Michael Brandstetter    Improvement scripts
+
+
+Code and assets from other projects
+-------------------------------------
+
+Tim Jansen <tim@tjansen.de>          QtEMU
+Urs Wolfer <uwolfer@kde.org>         Krdc
+Oxygen icon theme                    Oxygen Team
+

@@ -1,0 +1,37 @@
+.Dd May 17, 2026
+.Dt NEWAQEMU 1
+.Os Linux
+.Sh NAME
+.Nm newaqemu
+.Nd QEMU virtual machine manager for modern Linux
+.Sh SYNOPSIS
+.Nm newaqemu
+.Op Ar options
+.Sh DESCRIPTION
+.Nm
+is a graphical frontend for QEMU. It manages VM configuration files, launches
+ordinary VMs via QEMU, and supports a libvirt-based GPU passthrough profile
+(IOMMU, Intel iGPU SR-IOV VF, vfio-pci, Looking Glass / kvmfr).
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl h , Fl -help
+Show help.
+.It Fl -version
+Show version (1.0.0).
+.El
+.Sh FILES
+.Bl -tag -width Pa
+.It Pa ~/.config/newaqemu/newaqemu.conf
+Application settings.
+.It Pa ~/.aqemu/
+Legacy VM storage (still supported).
+.It Pa /usr/share/newaqemu/
+Installed icons, templates, and translations.
+.El
+.Sh SEE ALSO
+.Xr qemu 1 ,
+.Xr virsh 1 ,
+.Xr looking-glass-client 1 ,
+.Lk https://pen.waltuh.cyou/yonle/iommu-with-sr-iov-gpu-accelerated-windows-vm-on-a-linux-laptop-that-has-only
+.Sh AUTHORS
+newaqemu — fork of AQEMU for modern Linux (James Ed Randson and contributors).

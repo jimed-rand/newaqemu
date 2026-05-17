@@ -1,0 +1,56 @@
+# --- Cursor / editor local ---
+.cursor/
+.vscode/
+.idea/
+*.user
+*.user.*
+*.autosave
+*~
+*.swp
+*.swo
+.#*
+
+# --- CMake / build trees ---
+build/
+build-*/
+cmake-build-*/
+out/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+Testing/
+Makefile
+compile_commands.json
+*.cmake.user
+
+# --- CMake-generated in project root (docs + icon packs) ---
+/*.bz2
+/shared_images.rcc
+/icons.rcc
+
+# --- Qt / C++ artifacts ---
+*_autogen/
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
+*.o
+*.a
+*.so
+*.dll
+*.exe
+*.d
+/newaqemu
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Misc ---
+*.log
+*.orig
+*.rej
+.cache/

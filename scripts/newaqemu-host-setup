@@ -1,0 +1,67 @@
+#!/bin/sh
+# Apply host templates for Intel iGPU SR-IOV + vfio + kvmfr (newaqemu).
+set -eu
+
+GPU_BDF=""
+KVMFR_MB=32
+VF_COUNT=1
+
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+		--gpu-bdf) GPU_BDF="$2"; shift 2 ;;
+		--kvmfr-mb) KVMFR_MB="$2"; shift 2 ;;
+		--vf-count) VF_COUNT="$2"; shift 2 ;;
+		-h|--help)
+			echo "Usage: newaqemu-host-setup --gpu-bdf 0000:00:02.1 [--kvmfr-mb 32] [--vf-count 1]"
+			exit 0
+			;;
+		*) echo "Unknown option: $1" >&2; exit 2 ;;
+	esac
+done
+
+if [ "$(id -u)" -ne 0 ]; then
+	echo "Run as root (pkexec)." >&2
+	exit 1
+fi
+
+if [ -z "$GPU_BDF" ]; then
+	echo "--gpu-bdf is required" >&2
+	exit 2
+fi
+
+SYSFS="/sys/bus/pci/devices/${GPU_BDF}"
+if [ ! -d "$SYSFS" ]; then
+	echo "PCI device not found: $GPU_BDF" >&2
+	exit 3
+fi
+
+DEVICE_ID="$(cat "$SYSFS/device" 2>/dev/null | sed 's/0x//')"
+DOMAIN="$(echo "$GPU_BDF" | cut -d: -f1)"
+BUS="$(echo "$GPU_BDF" | cut -d: -f2)"
+DEVFN="$(echo "$GPU_BDF" | cut -d: -f3)"
+SLOT="$(echo "$DEVFN" | cut -d. -f1)"
+FUNC="$(echo "$DEVFN" | cut -d. -f2)"
+PCI_ADDR="${DOMAIN}:00:${SLOT}.${FUNC}"
+
+cat > /etc/tmpfiles.d/i915-set-sriov-numvfs.conf <<EOF
+w /sys/devices/pci0000:00/${PCI_ADDR}/sriov_numvfs - - - - ${VF_COUNT}
+EOF
+
+cat > /etc/udev/rules.d/99-newaqemu-i915-vf-vfio.rules <<EOF
+ACTION=="add", SUBSYSTEM=="pci", KERNEL=="${GPU_BDF}", ATTR{vendor}=="0x8086", ATTR{device}=="0x${DEVICE_ID}", DRIVER!="vfio-pci", RUN+="/bin/sh -c 'echo \$kernel > /sys/bus/pci/devices/\$kernel/driver/unbind; echo vfio-pci > /sys/bus/pci/devices/\$kernel/driver_override; modprobe vfio-pci; echo \$kernel > /sys/bus/pci/drivers/vfio-pci/bind'"
+EOF
+
+cat > /etc/modprobe.d/kvmfr.conf <<EOF
+options kvmfr static_size_mb=${KVMFR_MB}
+EOF
+
+cat > /etc/modules-load.d/kvmfr.conf <<EOF
+kvmfr
+EOF
+
+cat > /etc/udev/rules.d/99-newaqemu-kvmfr.rules <<EOF
+SUBSYSTEM=="kvmfr", GROUP="kvm", MODE="0660"
+EOF
+
+echo "Wrote tmpfiles, udev, and kvmfr module config."
+echo "Reboot recommended. Ensure kernel cmdline includes intel_iommu=on and i915.max_vfs=${VF_COUNT}."

@@ -1,0 +1,173 @@
+newaqemu — Qt6 graphical frontend for QEMU
+==========================================
+
+newaqemu is a fork of AQEMU aimed at modern Linux and Windows hosts. It keeps
+the familiar AQEMU workflow while adding a Qt6/C++17 codebase, hybrid QEMU /
+libvirt backends, and optional GPU passthrough host integration (Linux only).
+
+For a feature-oriented overview, see README.md in this source tree.
+
+
+PLATFORMS
+---------
+
+  Linux   — full feature set (ordinary VMs, passthrough, host setup helper)
+  Windows — build supported from 1.5.0; GPU passthrough remains Linux-only
+
+
+WHAT IS NEW (1.0.0 → 1.5.0)
+---------------------------
+
+  1.0.0  Rebrand (newaqemu binary, ~/.config/newaqemu/), Qt6, C++17
+         Hybrid backend: direct QEMU for normal VMs, libvirt for passthrough
+         Host probe UI (IOMMU, SR-IOV, vfio, kvmfr) and newaqemu-host-setup
+         Legacy AQEMU settings and .aqemu VM import
+
+  1.1.0  System tray (minimize/close to tray)
+         Emulator control window geometry persistence
+         USB disconnect from running VM (monitor usb_del)
+         Emulator control updates (VNC mouse grab, removable devices)
+
+  1.2.0  Embedded VNC reconnect improvements
+         SPICE display via remote-viewer / virt-viewer (when enabled at build)
+
+  1.3.0  Host audio driver selection (probed from qemu -audiodev help)
+         QEMU 8+ uses -audiodev; older QEMU keeps -soundhw
+
+  1.4.0  Help tooltips on main, advanced, and emulator control windows
+
+  1.5.0  Windows: USB host enumeration (SetupAPI), tray, paths
+         TCP monitor default on Windows; user-mode NAT works without TAP
+
+
+MINIMUM DEPENDENCIES
+--------------------
+
+  Qt6        — Core, Widgets, Network, Test, PrintSupport
+  CMake      — >= 3.16
+  C++17      — compiler with C++17 support (GCC, Clang, or MSVC on Windows)
+  QEMU       — >= 6.x (8.x+ recommended)
+
+  Linux passthrough profile (optional):
+    libvirt and virsh (WITH_LIBVIRT=on, default)
+
+  Optional:
+    LibVNCServer     — embedded VNC display (omit with WITHOUT_EMBEDDED_DISPLAY=on)
+    virt-viewer or remote-viewer — SPICE display helper
+    looking-glass-client, kvmfr, i915-sriov-dkms — Intel iGPU VF workflow (Linux)
+
+
+UPGRADING FROM AQEMU
+--------------------
+
+  newaqemu installs as a separate application (binary: newaqemu, data under
+  share/newaqemu, user config under ~/.config/newaqemu/). On first run it can
+  import legacy AQEMU settings and .aqemu VM definitions.
+
+  If you previously installed AQEMU under /usr/share/aqemu or
+  /usr/share/apps/aqemu, that tree is not removed automatically when you install
+  newaqemu elsewhere; delete old AQEMU resource directories manually if you no
+  longer need them.
+
+  After importing VMs, open each VM and click Apply once if prompted so stored
+  settings match the current format.
+
+
+BUILD AND INSTALL (Linux)
+-------------------------
+
+  1. Extract or clone the source, then:
+
+       cd newaqemu
+       cmake -B build -DCMAKE_INSTALL_PREFIX=/usr
+       cmake --build build
+       sudo cmake --install build
+
+  2. Run:  newaqemu
+
+  Common CMake options:
+
+    -DCMAKE_INSTALL_PREFIX=PATH
+        Install prefix (default: /usr/local). Binaries go to PREFIX/bin,
+        data to PREFIX/share/newaqemu.
+
+    -DWITHOUT_EMBEDDED_DISPLAY=on
+        Build without embedded VNC (no LibVNCServer required).
+
+    -DWITH_SPICE_DISPLAY=on|off  (default: on)
+        SPICE helper using external remote-viewer (only if embedded display on).
+
+    -DWITH_LIBVIRT=on|off  (default: on)
+        Compile libvirt passthrough backend support.
+
+    -DDEBUG=on
+        Debug build (-Wall -g).
+
+    -DINSTALL_MAN=on|off  (default: on)
+        Install newaqemu.1 man page.
+
+    -DUPDATE_TRANSLATIONS=on
+        Regenerate translation sources (developers only).
+
+  Minimal build (no embedded display):
+
+       cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DWITHOUT_EMBEDDED_DISPLAY=on
+       cmake --build build
+       sudo cmake --install build
+
+
+BUILD (Windows)
+---------------
+
+  Use Qt6 for Windows (MSVC or MinGW), then:
+
+       cmake -B build -G Ninja -DCMAKE_PREFIX_PATH=<Qt6_DIR>
+       cmake --build build
+       windeployqt build/newaqemu.exe
+
+  Use TCP monitor (default on Windows). User-mode NAT works without extra
+  drivers; TAP bridging needs a separate TAP-Windows adapter (not automated).
+
+
+GPU PASSTHROUGH (Linux only)
+------------------------------
+
+  1. Advanced Settings → GPU passthrough — review host readiness.
+  2. Apply host templates, e.g.:
+       pkexec newaqemu-host-setup --gpu-bdf 0000:00:02.1 --kvmfr-mb 32
+  3. Set kernel cmdline (intel_iommu=on, i915.max_vfs=1, …) and reboot.
+  4. Create a VM with GPU passthrough enabled in the wizard.
+  5. After Windows install: Intel driver, Looking Glass host, VDD, then switch
+     display to Looking Glass as documented in-app.
+
+  Reference workflow (external):
+  https://pen.waltuh.cyou/yonle/iommu-with-sr-iov-gpu-accelerated-windows-vm-on-a-linux-laptop-that-has-only
+
+
+EMBEDDED VNC / SPICE
+--------------------
+
+  Embedded VNC is optional at build time and can be experimental; prefer
+  external viewers if you hit display issues. SPICE opens remote-viewer or
+  virt-viewer when SPICE is enabled on the VM and WITH_SPICE_DISPLAY is on.
+
+
+VERSIONING
+----------
+
+  1.0.x   Qt6 rebrand and passthrough baseline
+  1.1.x–1.5.x   Tray, USB, display, sound, tooltips, Windows port
+
+
+LICENSE AND CREDITS
+-------------------
+
+  GPL-2.0 — see COPYING.
+
+  newaqemu is maintained by James "Jim" Ed Randson <jimedrand@disroot.org>.
+  AQEMU was written by Andrey Rijov; Tobias Glässer maintained AQEMU from 0.9.0.
+  See AUTHORS for the full list.
+
+  Bug reports and pull requests are welcome on the project's issue tracker.
+  See README.md or your distribution's package metadata for the canonical URL.
+
