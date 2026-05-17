@@ -1,9 +1,9 @@
-# newaqemu manual test matrix (1.5.0)
+# newaqemu manual test matrix
 
 ## Build
 
 - [ ] `cmake -B build -DWITHOUT_EMBEDDED_DISPLAY=on && cmake --build build`
-- [ ] `build/newaqemu --version` prints `newaqemu 1.5.0`
+- [ ] `build/newaqemu --version` prints `newaqemu 1.0.0`
 - [ ] Full build with LibVNCServer + `WITH_SPICE_DISPLAY=on`
 
 ## Rebrand / migration
@@ -13,7 +13,7 @@
 - [ ] Loads existing `.aqemu` VM XML (root tag `AQEMU`)
 - [ ] Saves new VMs with root tag `newaqemu`
 
-## Direct QEMU VM (1.1.0)
+## Direct QEMU VM
 
 - [ ] Create typical Linux VM, start/stop via QEMU
 - [ ] KVM module check still works on Linux
@@ -21,17 +21,17 @@
 - [ ] Emulator control window restores geometry after restart
 - [ ] Minimize to tray / close to tray (Advanced Settings)
 
-## Embedded display (1.2.0)
+## Embedded display
 
 - [ ] VNC VM: embedded display scales and reconnects
 - [ ] SPICE VM: “Open SPICE viewer” launches remote-viewer
 
-## Sound (1.3.0)
+## Sound
 
 - [ ] Advanced Settings → host sound driver list populated from QEMU probe
 - [ ] QEMU 8+ command line includes `-audiodev` when HDA enabled
 
-## Tooltips (1.4.0)
+## Tooltips
 
 - [ ] Hover main window actions and advanced settings tray/audio options
 
@@ -44,7 +44,7 @@
 - [ ] Start passthrough VM calls `virsh define` + `virsh start` (requires libvirt)
 - [ ] Looking Glass client launch on start when enabled
 
-## Windows (1.5.0)
+## Windows
 
 - [ ] Builds with Qt6 MSVC or MinGW
 - [ ] Wizard + start/stop VM

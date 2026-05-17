@@ -1,7 +1,7 @@
 # newaqemu CMake Project
 
-PROJECT( newaqemu CXX )
 CMAKE_MINIMUM_REQUIRED( VERSION 3.16 FATAL_ERROR )
+PROJECT( newaqemu VERSION 1.0.0 LANGUAGES CXX )
 
 OPTION( DEBUG "Build with debug information" )
 OPTION( WITHOUT_EMBEDDED_DISPLAY "Build without support Embedded VNC Display" )
@@ -219,6 +219,7 @@ ADD_EXECUTABLE( newaqemu
 )
 
 TARGET_INCLUDE_DIRECTORIES( newaqemu PUBLIC src/ )
+TARGET_COMPILE_DEFINITIONS( newaqemu PRIVATE NEWAQEMU_VERSION="${PROJECT_VERSION}" )
 
 TARGET_LINK_LIBRARIES( newaqemu
 	Qt6::Core

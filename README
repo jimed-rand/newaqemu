@@ -12,32 +12,7 @@ PLATFORMS
 ---------
 
   Linux   — full feature set (ordinary VMs, passthrough, host setup helper)
-  Windows — build supported from 1.5.0; GPU passthrough remains Linux-only
-
-
-WHAT IS NEW (1.0.0 → 1.5.0)
----------------------------
-
-  1.0.0  Rebrand (newaqemu binary, ~/.config/newaqemu/), Qt6, C++17
-         Hybrid backend: direct QEMU for normal VMs, libvirt for passthrough
-         Host probe UI (IOMMU, SR-IOV, vfio, kvmfr) and newaqemu-host-setup
-         Legacy AQEMU settings and .aqemu VM import
-
-  1.1.0  System tray (minimize/close to tray)
-         Emulator control window geometry persistence
-         USB disconnect from running VM (monitor usb_del)
-         Emulator control updates (VNC mouse grab, removable devices)
-
-  1.2.0  Embedded VNC reconnect improvements
-         SPICE display via remote-viewer / virt-viewer (when enabled at build)
-
-  1.3.0  Host audio driver selection (probed from qemu -audiodev help)
-         QEMU 8+ uses -audiodev; older QEMU keeps -soundhw
-
-  1.4.0  Help tooltips on main, advanced, and emulator control windows
-
-  1.5.0  Windows: USB host enumeration (SetupAPI), tray, paths
-         TCP monitor default on Windows; user-mode NAT works without TAP
+  Windows — build supported; GPU passthrough remains Linux-only
 
 
 MINIMUM DEPENDENCIES
@@ -150,13 +125,6 @@ EMBEDDED VNC / SPICE
   Embedded VNC is optional at build time and can be experimental; prefer
   external viewers if you hit display issues. SPICE opens remote-viewer or
   virt-viewer when SPICE is enabled on the VM and WITH_SPICE_DISPLAY is on.
-
-
-VERSIONING
-----------
-
-  1.0.x   Qt6 rebrand and passthrough baseline
-  1.1.x–1.5.x   Tray, USB, display, sound, tooltips, Windows port
 
 
 LICENSE AND CREDITS

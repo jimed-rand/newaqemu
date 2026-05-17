@@ -6,7 +6,11 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-static const char kVersion[] = "1.5.0";
+#ifndef NEWAQEMU_VERSION
+#define NEWAQEMU_VERSION "1.0.0"
+#endif
+
+static const char kVersion[] = NEWAQEMU_VERSION;
 
 const char *AppInfo::version()
 {

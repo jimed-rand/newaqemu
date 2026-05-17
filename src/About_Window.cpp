@@ -38,12 +38,18 @@ About_Window::About_Window( QWidget *parent ): QDialog( parent )
 	// Minimum Size
 	resize( width(), minimumSizeHint().height() );
 
+	QString aboutHtml = ui.About_Text->text();
+	aboutHtml.replace(
+		QStringLiteral( ">1.0.0<" ),
+		QStringLiteral( ">" ) + QString::fromUtf8( AppInfo::version() ) + QStringLiteral( "<" ) );
+	ui.About_Text->setText( aboutHtml );
+
 	// Thanks HTML Text
 	ui.Edit_Thanks_To_Text->setHtml( tr(
 	"<b>Developers:</b>\n"
 	"<br>Andrey Rijov (aka RDron) - Original Author (Up until version 0.8.2)\n"
 	"<br>Tobias Gläßer - Maintainer/Developer (Version 0.9.0 and up)\n"
-	"<br>James Ed Randson - newaqemu fork (1.0.0+, Qt6, GPU passthrough)\n"
+	"<br>James Ed Randson - newaqemu fork (Qt6, GPU passthrough)\n"
 
 	"<br><br><b>Contributors:</b>\n"
     "<br>Georg Schlisio - Arch Linux Packaging and Testing\n"

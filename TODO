@@ -1,18 +1,18 @@
 # This TODO list was originally created by Andrej Rijov.
-# Completed items are marked for newaqemu 1.1.0–1.5.0.
+# Completed items are marked for newaqemu 1.0.0.
 
-* [x] New embedded display (done in 1.2.0 — VNC improvements + SPICE viewer integration)
+* [x] New embedded display (VNC improvements + SPICE viewer integration)
 
-* [x] Ability to minimize to tray. (done in 1.1.0)
+* [x] Ability to minimize to tray.
 
-* [x] Update Emulator Control (done in 1.1.0 — USB disconnect, mouse grab, QScreen, device changer)
+* [x] Update Emulator Control (USB disconnect, mouse grab, QScreen, device changer)
 
-* [x] Easy USB disconnect support (done in 1.1.0)
+* [x] Easy USB disconnect support
 
-* [x] Ability save emulator window position and size (done in 1.1.0)
+* [x] Ability save emulator window position and size
 
-* [x] Tool tips for all options (done in 1.4.0 — priority windows via UiTooltips)
+* [x] Tool tips for all options (priority windows via UiTooltips)
 
-* [x] Complete GUI for managing QEMU sound system (done in 1.3.0 — -audiodev probe + host driver UI)
+* [x] Complete GUI for managing QEMU sound system (-audiodev probe + host driver UI)
 
-* [x] Complete windows port (done in 1.5.0 — USB host enumeration, build notes; passthrough remains Linux-only)
+* [x] Complete windows port (USB host enumeration, build notes; passthrough remains Linux-only)
