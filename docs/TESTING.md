@@ -2,9 +2,10 @@
 
 ## Build
 
-- [ ] `cmake -B build -DWITHOUT_EMBEDDED_DISPLAY=on && cmake --build build`
-- [ ] `build/newaqemu --version` prints `newaqemu 1.0.0`
-- [ ] Full build with LibVNCServer + `WITH_SPICE_DISPLAY=on`
+- [ ] `make` (minimal) and `build/newaqemu --version` prints `newaqemu 1.0.0`
+- [ ] `make help` lists targets
+- [ ] `cmake -B build -DWITHOUT_EMBEDDED_DISPLAY=on && cmake --build build` (or `make` only)
+- [ ] Full build: `make full` (LibVNCServer + `WITH_SPICE_DISPLAY=on`)
 
 ## Rebrand / migration
 

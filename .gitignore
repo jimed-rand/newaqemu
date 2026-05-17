@@ -21,7 +21,9 @@ cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
 Testing/
-Makefile
+# CMake-generated Makefile from in-tree configure (root wrapper is tracked)
+/Makefile
+!/Makefile
 compile_commands.json
 *.cmake.user
 

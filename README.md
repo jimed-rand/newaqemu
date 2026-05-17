@@ -29,17 +29,33 @@
 ## Build (Linux)
 
 ```bash
+make
+sudo make install
+```
+
+Embedded VNC + SPICE (requires LibVNCServer):
+
+```bash
+make full
+sudo make install
+```
+
+Advanced / explicit CMake (packagers, custom prefixes):
+
+```bash
 cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DWITHOUT_EMBEDDED_DISPLAY=on
 cmake --build build
 sudo cmake --install build
 ```
 
-With embedded VNC + SPICE helper:
+Full display via CMake:
 
 ```bash
 cmake -B build -DCMAKE_INSTALL_PREFIX=/usr
 cmake --build build
 ```
+
+Run `make help` for targets (`clean`, `distclean`, `debug`, `run`) and variables (`PREFIX`, `JOBS`, `CMAKE_ARGS`).
 
 ## Build (Windows)
 
