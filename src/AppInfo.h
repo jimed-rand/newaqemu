@@ -16,6 +16,7 @@ public:
 	static QString vmDirectoryKey();
 
 	static QStringList dataSearchPaths();
+	static QString findBundledDataFile( const QString &fileName );
 	static QString defaultLogFileName();
 
 	static bool isLegacyAqemuConfigPath( const QString &settingsFile );

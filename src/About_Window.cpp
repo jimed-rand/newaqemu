@@ -26,6 +26,8 @@
 #include <QTextStream>
 #include <QDir>
 #include <QMessageBox>
+#include <QDateTime>
+#include <fstream>
 
 #include "Utils.h"
 #include "AppInfo.h"
@@ -85,11 +87,7 @@ About_Window::About_Window( QWidget *parent ): QDialog( parent )
 	"<br><br><b>Icons:</b>\n"
 	"<br>Oxygen - Icon Theme From Oxygen Team\n") );
 	
-	// Load Links
-	QSettings settings;
-	QFileInfo logFileDir( settings.fileName() );
-	linksFilePath = QDir::toNativeSeparators( logFileDir.absolutePath() + "/links.html" );
-	
+	linksFilePath = AppInfo::findBundledDataFile( QStringLiteral( "docs/links.html" ) );
 	Show_Links_File();
 
     ui.Tabs->setCurrentIndex(0);
@@ -97,23 +95,27 @@ About_Window::About_Window( QWidget *parent ): QDialog( parent )
 
 void About_Window::Show_Links_File()
 {
-	QSettings settings;
-	QString show_url;
+	const QString show_url = AppInfo::findBundledDataFile( QStringLiteral( "docs/links.html" ) );
 
-	if( QFile::exists(linksFilePath) )
+	// #region agent log
 	{
-		show_url = linksFilePath;
+		std::ofstream log( "/home/jimedrand/Git/newaqemu/.cursor/debug-406f4b.log", std::ios::app );
+		log << "{\"sessionId\":\"406f4b\",\"hypothesisId\":\"B\",\"location\":\"About_Window.cpp:Show_Links_File\","
+		    << "\"message\":\"resolve links.html\","
+		    << "\"data\":{\"path\":\"" << show_url.toStdString() << "\","
+		    << "\"exists\":" << ( show_url.isEmpty() ? "false" : "true" ) << "},"
+		    << "\"timestamp\":" << QDateTime::currentMSecsSinceEpoch() << "}\n";
 	}
-	else if( QFile::exists(QDir::toNativeSeparators(settings.value("AQEMU_Data_Folder", "").toString() + "/docs/links.html")) )
-	{
-		show_url = QDir::toNativeSeparators( settings.value("AQEMU_Data_Folder", "").toString() + "/docs/links.html" );
-	}
-	else
+	// #endregion
+
+	if( show_url.isEmpty() )
 	{
 		AQGraphic_Warning( tr("Error!"),
 						   tr("Cannot Find AQEMU Links File!") );
 		return;
 	}
+
+	linksFilePath = show_url;
 
 	QFile links_file( show_url );
 

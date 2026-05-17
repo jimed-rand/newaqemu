@@ -1,5 +1,6 @@
 #include "AppInfo.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QMessageBox>
@@ -61,6 +62,35 @@ QStringList AppInfo::dataSearchPaths()
 QString AppInfo::defaultLogFileName()
 {
 	return QStringLiteral( "newaqemu.log" );
+}
+
+QString AppInfo::findBundledDataFile( const QString &fileName )
+{
+	QStringList candidates;
+	QSettings settings;
+
+	const QString dataFolder = settings.value(
+		dataFolderKey(),
+		settings.value( QStringLiteral( "AQEMU_Data_Folder" ) ) ).toString();
+	if( ! dataFolder.isEmpty() )
+		candidates << QDir( dataFolder ).filePath( fileName );
+
+	for( const QString &dir : dataSearchPaths() )
+		candidates << QDir( dir ).filePath( fileName );
+
+	const QString appDir = QCoreApplication::applicationDirPath();
+	candidates << QDir( appDir ).filePath( fileName );
+	candidates << QDir( appDir ).filePath( QStringLiteral( "../" ) + fileName );
+	candidates << QDir( appDir ).filePath( QStringLiteral( "../resources/" ) + fileName );
+	candidates << QDir( appDir ).filePath( QStringLiteral( "../share/newaqemu/" ) + fileName );
+
+	for( const QString &path : candidates )
+	{
+		if( QFile::exists( path ) )
+			return QDir::toNativeSeparators( path );
+	}
+
+	return QString();
 }
 
 bool AppInfo::isLegacyAqemuConfigPath( const QString &settingsFile )

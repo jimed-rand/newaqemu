@@ -28,6 +28,9 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
+#include <QDateTime>
+#include <fstream>
 
 // For Check User UID
 #ifdef Q_OS_LINUX
@@ -302,15 +305,36 @@ int main( int argc, char *argv[] )
 		#endif
 	}
 	
-	// Load Images
-	QString iconsThemeFile = "";
-	
-	iconsThemeFile = QDir::toNativeSeparators( dataFolderValue() + "/icons.rcc" );
-		
-	if( ! QResource::registerResource(iconsThemeFile) )
+	// Load Images (.rcc built by CMake; search data dir, share paths, and build tree)
+	const QString iconsThemeFile = AppInfo::findBundledDataFile( QStringLiteral( "icons.rcc" ) );
+	const bool iconsLoaded = ! iconsThemeFile.isEmpty()
+		&& QResource::registerResource( iconsThemeFile );
+	QString sharedImagesFile;
+	if( iconsLoaded )
 	{
+		sharedImagesFile = AppInfo::findBundledDataFile( QStringLiteral( "shared_images.rcc" ) );
+		if( ! sharedImagesFile.isEmpty() )
+			QResource::registerResource( sharedImagesFile );
+	}
+
+	// #region agent log
+	{
+		std::ofstream log( "/home/jimedrand/Git/newaqemu/.cursor/debug-406f4b.log", std::ios::app );
+		log << "{\"sessionId\":\"406f4b\",\"hypothesisId\":\"A\",\"location\":\"main.cpp:rcc\","
+		    << "\"message\":\"registerResource\","
+		    << "\"data\":{\"dataFolder\":\"" << dataFolderValue().toStdString() << "\","
+		    << "\"iconsLoaded\":" << ( iconsLoaded ? "true" : "false" ) << ","
+		    << "\"iconsRcc\":\"" << iconsThemeFile.toStdString() << "\","
+		    << "\"sharedImagesRcc\":\"" << sharedImagesFile.toStdString() << "\"},"
+		    << "\"timestamp\":" << QDateTime::currentMSecsSinceEpoch() << "}\n";
+	}
+	// #endregion
+
+	if( ! iconsLoaded )
+	{
+		const QString tried = QDir::toNativeSeparators( dataFolderValue() + QStringLiteral( "/icons.rcc" ) );
 		AQGraphic_Error( "int main( int argc, char *argv[] )", QObject::tr("Error!"),
-						 QObject::tr("Cannot load newaqemu icon theme.\nFile \"%1\" not found.").arg(iconsThemeFile), false );
+						 QObject::tr("Cannot load newaqemu icon theme.\nFile \"%1\" not found.").arg( tried ), false );
 	}
 	
 	// This is a first start AQEMU on this computer?

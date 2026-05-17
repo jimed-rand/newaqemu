@@ -2,11 +2,10 @@
 Exec=newaqemu
 Terminal=false
 Type=Application
-Icon=newaqemu
+Icon=aqemu
 StartupNotify=true
 Categories=System;Emulator;
 
 Name=newaqemu
-Comment=Virtual machine manager for modern Linux (QEMU + GPU passthrough)
-Name[ru]=newaqemu
-Comment[ru]=Управление виртуальными машинами для современного Linux
+Comment=Virtual machine manager
+Name[id_ID]=newaqemu.desktop
