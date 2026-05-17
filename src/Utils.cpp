@@ -33,6 +33,8 @@
 #include <QProcess>
 #include <QStringList>
 #include <QTextStream>
+#include <QRandomGenerator>
+#include <algorithm>
 
 #ifdef Q_OS_WIN32
 #include <iostream>
@@ -385,7 +387,7 @@ QList<QString> Get_Templates_List()
 		all_templates.append( user_templates_list[ix].absoluteFilePath() );
 	
 	// sort
-	qSort( all_templates );
+	std::sort( all_templates.begin(), all_templates.end() );
 	
 	return all_templates;
 }
@@ -397,7 +399,7 @@ QString Get_FS_Compatible_VM_Name( const QString &name )
 	QRegExp vm_name_val = QRegExp( "[^\\w\\.]" );
 	
 	QString tmp = name;
-	tmp = tmp.replace( vm_name_val, "_" );
+	tmp = replaceWithRegExp( tmp, vm_name_val, "_" );
 	
 	return tmp.replace( "__", "_" );
 }
@@ -408,7 +410,7 @@ QString Get_Complete_VM_File_Path( const QString &vm_name )
 	QRegExp vm_name_val = QRegExp( "[^\\w]" );
 	
 	QString tmp = vm_name;
-	tmp = tmp.replace( vm_name_val, "_" );
+	tmp = replaceWithRegExp( tmp, vm_name_val, "_" );
 	
 	QString new_name = tmp.replace( "__", "_" );
 	QString tmp_str = new_name;
@@ -811,9 +813,7 @@ int Get_Random( int min, int max )
 		return -1;
 	}
 	
-	qsrand( QTime::currentTime().msec() );
-	
-	return int( qrand() / (RAND_MAX + 1.0) * (max + 1 - min) + min );
+	return QRandomGenerator::global()->bounded( min, max + 1 );
 }
 
 void Load_Recent_Images_List()

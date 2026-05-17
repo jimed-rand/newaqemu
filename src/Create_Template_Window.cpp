@@ -134,7 +134,7 @@ void Create_Template_Window::on_Button_Create_clicked()
 	QString new_template_name = ui.Edit_Template_Name->text();
 	
 	QRegExp VM_Name_Val = QRegExp( "[^a-zA-Z0-9_]" );
-	new_template_name = new_template_name.replace( VM_Name_Val, "_" );
+	new_template_name = replaceWithRegExp( new_template_name, VM_Name_Val, "_" );
 	new_template_name = new_template_name.replace( "__", "_" );
 	
 	if( ! tmp_vm->Create_Template(ui.Edit_Template_Folder->text() +
@@ -167,7 +167,7 @@ bool Create_Template_Window::Name_is_Unique()
 			QString new_template_name = ui.Edit_Template_Name->text();
 	
 			QRegExp VM_Name_Val = QRegExp( "[^a-zA-Z0-9_]" );
-			new_template_name = new_template_name.replace( VM_Name_Val, "_" );
+			new_template_name = replaceWithRegExp( new_template_name, VM_Name_Val, "_" );
 			new_template_name = new_template_name.replace( "__", "_" );
 			
 			if( tmp_info.completeBaseName() == new_template_name )

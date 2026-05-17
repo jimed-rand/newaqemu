@@ -18,7 +18,7 @@
 
 ## Dependencies
 
-- Qt6 (Core, Widgets, Network, Test, PrintSupport)
+- Qt6 (Core, Widgets, Network, Test, PrintSupport, LinguistTools for translations)
 - CMake ≥ 3.16
 - QEMU ≥ 6.x (8.x+ recommended)
 - **libvirt** + `virsh` (Linux passthrough profile only)

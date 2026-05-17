@@ -262,7 +262,7 @@ void Emulator_Control_Window::Create_Device_Menu()
 	}
 	
 	// Parse line
-	QString internalDevName = QString(value).replace( QRegExp("\\:.*"), "" ); // Get device name
+	QString internalDevName = removeWithRegExp( QString( value ), QRegExp( "\\:.*" ) ); // Get device name
 	
 	// Get device source path
 	QString deviceSourcePath = "";

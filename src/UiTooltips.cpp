@@ -8,9 +8,7 @@
 #include "SPICE_Settings_Widget.h"
 #include "Passthrough_Setup_Widget.h"
 
-namespace UiTooltips {
-
-void Apply_Main_Window( Main_Window *mw )
+void UiTooltips::Apply_Main_Window( Main_Window *mw )
 {
 	if( ! mw ) return;
 	mw->ui.actionPower_On->setToolTip( QObject::tr( "Start the selected virtual machine (QEMU/KVM)." ) );
@@ -24,7 +22,7 @@ void Apply_Main_Window( Main_Window *mw )
 	mw->ui.CH_es1370->setToolTip( QObject::tr( "Ensoniq ES1370 PCI audio." ) );
 }
 
-void Apply_Advanced_Settings( Advanced_Settings_Window *win )
+void UiTooltips::Apply_Advanced_Settings( Advanced_Settings_Window *win )
 {
 	if( ! win ) return;
 	win->ui.CH_Minimize_To_Tray->setToolTip(
@@ -41,7 +39,7 @@ void Apply_Advanced_Settings( Advanced_Settings_Window *win )
 		QObject::tr( "Use the monitor-based removable media menu in Emulator Control." ) );
 }
 
-void Apply_Emulator_Control( Emulator_Control_Window *win )
+void UiTooltips::Apply_Emulator_Control( Emulator_Control_Window *win )
 {
 	if( ! win ) return;
 	win->ui.actionGrab_Mouse->setToolTip(
@@ -54,7 +52,7 @@ void Apply_Emulator_Control( Emulator_Control_Window *win )
 		QObject::tr( "Disconnect by bus.address (monitor: usb_del)." ) );
 }
 
-void Apply_VM_Wizard( VM_Wizard_Window *win )
+void UiTooltips::Apply_VM_Wizard( VM_Wizard_Window *win )
 {
 	if( ! win ) return;
 	win->setToolTip( QObject::tr( "Create a new virtual machine configuration." ) );
@@ -66,16 +64,14 @@ void Apply_Network_Widget( Network_Widget *win )
 	win->setToolTip( QObject::tr( "Configure virtual network cards and port redirections for the VM." ) );
 }
 
-void Apply_SPICE_Widget( SPICE_Settings_Widget *win )
+void UiTooltips::Apply_SPICE_Widget( SPICE_Settings_Widget *win )
 {
 	if( ! win ) return;
 	win->setToolTip( QObject::tr( "SPICE display and compression settings for the VM." ) );
 }
 
-void Apply_Passthrough_Widget( Passthrough_Setup_Widget *win )
+void UiTooltips::Apply_Passthrough_Widget( Passthrough_Setup_Widget *win )
 {
 	if( ! win ) return;
 	win->setToolTip( QObject::tr( "Linux-only GPU passthrough host readiness and templates." ) );
-}
-
 }

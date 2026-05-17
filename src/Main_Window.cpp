@@ -5294,7 +5294,7 @@ void Main_Window::Update_Computer_Types()
         // painted already and palette returns the wanted color
         item->setData(only_native ? ui.CB_Computer_Type->palette().color(QPalette::Disabled, QPalette::Text)
                           : QVariant(), // clear item data in order to use default color
-                      Qt::TextColorRole);
+                      Qt::ForegroundRole);
     }
 
     ui.CB_Computer_Type->blockSignals(false);

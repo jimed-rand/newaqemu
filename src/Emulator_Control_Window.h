@@ -39,12 +39,12 @@
 
 class Virtual_Machine;
 
-namespace UiTooltips { void Apply_Emulator_Control( class Emulator_Control_Window *win ); }
+class UiTooltips;
 
 class Emulator_Control_Window: public QMainWindow
 {
 	Q_OBJECT
-	friend void UiTooltips::Apply_Emulator_Control( Emulator_Control_Window *win );
+	friend class UiTooltips;
 	
 	public:
 		Emulator_Control_Window( QWidget *parent = 0 );

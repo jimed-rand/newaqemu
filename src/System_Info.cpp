@@ -1760,7 +1760,7 @@ Available_Devices System_Info::Get_Emulator_Info( const QString &path, bool *ok,
 		
 		// String empty?
 		if( ! (qemu_dev_name.isEmpty() ||
-			   qemu_dev_name.indexOf(QRegExp("/^\\S+$/"), 0) != -1) )
+			   indexOfRegExp( qemu_dev_name, QRegExp( "/^\\S+$/" ), 0 ) != -1) )
 		{
 			bool cpu_found = false;
 			for( int ix = 0; ix < default_device.CPU_List.count(); ix++ )
@@ -1822,7 +1822,7 @@ Available_Devices System_Info::Get_Emulator_Info( const QString &path, bool *ok,
 			}
 		}
 		
-		if( ! (dev_map.QEMU_Name.isEmpty() || dev_map.QEMU_Name.indexOf(QRegExp("/^\\S+$/"), 0) != -1) )
+		if( ! (dev_map.QEMU_Name.isEmpty() || indexOfRegExp( dev_map.QEMU_Name, QRegExp( "/^\\S+$/" ), 0 ) != -1) )
 		{
 			bool machine_found = false;
 			for( int ix = 0; ix < default_device.Machine_List.count(); ix++ )
@@ -1923,7 +1923,7 @@ Available_Devices System_Info::Get_Emulator_Info( const QString &path, bool *ok,
 		if( tmp.isEmpty() ||
 			tmp.startsWith("Valid sound card names") ||
 			tmp.startsWith("-soundhw") ||
-			tmp.indexOf(QRegExp("/^\\S+$/"), 0) != -1 ) continue;
+			indexOfRegExp( tmp, QRegExp( "/^\\S+$/" ), 0 ) != -1 ) continue;
 		
 		// Get QEMU ID String
 		QRegExp tmp_rx = QRegExp( "([\\w-.]+)\\s+.*" );

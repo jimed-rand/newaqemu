@@ -144,7 +144,7 @@ const QString QDomElement::text() const
         return QString("");
 }
 
-bool QDomElement::isNull()
+bool QDomElement::isNull() const
 {
     //TODO
     if ( element )
@@ -166,7 +166,7 @@ bool QDomElement::isNull()
         return true;
 }
 
-QString QDomElement::tagName()
+QString QDomElement::tagName() const
 {
     if ( element )
         return element->Name();
@@ -194,7 +194,7 @@ const QDomNode QDomNode::nextSibling()
         return QDomNode();
 }
 
-bool QDomNode::isNull()
+bool QDomNode::isNull() const
 {
     if ( node )
     {

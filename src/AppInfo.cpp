@@ -19,7 +19,8 @@ const char *AppInfo::version()
 
 const char *AppInfo::versionString()
 {
-	return "newaqemu " kVersion;
+	static const char kVersionString[] = "newaqemu " NEWAQEMU_VERSION;
+	return kVersionString;
 }
 
 QString AppInfo::applicationName()

@@ -47,12 +47,12 @@ class Device_Manager_Widget;
 class Folder_Sharing_Widget;
 class Network_Card_Widget;
 
-namespace UiTooltips { void Apply_Main_Window( class Main_Window *mw ); }
+class UiTooltips;
 
 class Main_Window: public QMainWindow
 {
 	Q_OBJECT
-	friend void UiTooltips::Apply_Main_Window( Main_Window *mw );
+	friend class UiTooltips;
 	
 	public:
 		Main_Window( QWidget *parent = 0 );

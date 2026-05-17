@@ -87,6 +87,7 @@ install_zypper() {
 		gcc-c++
 		qt6-base-devel
 		qt6-tools-devel
+		qt6-linguist-devel
 		bzip2
 		libvirt-devel
 	)
@@ -154,7 +155,7 @@ Install manually, then run: make
     # full: libvncserver-devel
 
   openSUSE:
-    sudo zypper install cmake ninja gcc-c++ qt6-base-devel qt6-tools-devel bzip2 libvirt-devel
+    sudo zypper install cmake ninja gcc-c++ qt6-base-devel qt6-tools-devel qt6-linguist-devel bzip2 libvirt-devel
     # full: libvncserver-devel
 
   Arch:

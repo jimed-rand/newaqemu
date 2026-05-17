@@ -30,12 +30,12 @@
 
 class Settings_Widget;
 
-namespace UiTooltips { void Apply_Advanced_Settings( class Advanced_Settings_Window *win ); }
+class UiTooltips;
 
 class Advanced_Settings_Window: public QDialog
 {
 	Q_OBJECT
-	friend void UiTooltips::Apply_Advanced_Settings( Advanced_Settings_Window *win );
+	friend class UiTooltips;
 	
 	public:
 		Advanced_Settings_Window( QWidget *parent = 0 );

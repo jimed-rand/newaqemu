@@ -69,8 +69,8 @@ namespace TinyXML2QDomWrapper {
             bool hasAttribute(const QString&);
             QString attribute(const QString&);
             const QString text() const;
-            bool isNull();
-            QString tagName();
+            bool isNull() const;
+            QString tagName() const;
         private:
             XMLElement* element;
     };
@@ -84,7 +84,7 @@ namespace TinyXML2QDomWrapper {
             QDomNode(XMLNode* _node);
             QDomNode();
             const QDomNode nextSibling();
-            bool isNull();
+            bool isNull() const;
             const QDomElement toElement() const;
 
         private:

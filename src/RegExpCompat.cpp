@@ -24,9 +24,17 @@ void RegExpCompat::setPatternSyntax( PatternSyntax syntax )
 	rebuild();
 }
 
+void RegExpCompat::setCaseSensitivity( Qt::CaseSensitivity cs )
+{
+	m_caseSensitivity = cs;
+	rebuild();
+}
+
 void RegExpCompat::rebuild()
 {
 	QRegularExpression::PatternOptions opts = QRegularExpression::NoPatternOption;
+	if( m_caseSensitivity == Qt::CaseInsensitive )
+		opts |= QRegularExpression::CaseInsensitiveOption;
 	QString pat = m_pattern;
 
 	switch( m_syntax )
@@ -43,14 +51,11 @@ void RegExpCompat::rebuild()
 		break;
 	case RegExp:
 	default:
-		if( ! pat.startsWith( '^' ) )
-			pat.prepend( '^' );
-		if( ! pat.endsWith( '$' ) )
-			pat.append( '$' );
 		break;
 	}
 
-	m_re.setPattern( pat, opts );
+	m_re.setPattern( pat );
+	m_re.setPatternOptions( opts );
 }
 
 bool RegExpCompat::matchInternal( const QString &str, int offset ) const
@@ -74,6 +79,33 @@ int RegExpCompat::indexIn( const QString &str, int offset ) const
 		return -1;
 	return m_lastMatch.capturedStart();
 }
+
+QRegularExpression RegExpCompat::regularExpression() const
+{
+	return m_re;
+}
+
+QString replaceWithRegExp( QString subject, const RegExpCompat &rx, const QString &after )
+{
+	return subject.replace( rx.regularExpression(), after );
+}
+
+QString removeWithRegExp( QString subject, const RegExpCompat &rx )
+{
+	return replaceWithRegExp( subject, rx, QString() );
+}
+
+int indexOfRegExp( const QString &subject, const RegExpCompat &rx, int offset )
+{
+	return rx.indexIn( subject, offset );
+}
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+RegExpCompatValidator::RegExpCompatValidator( const RegExpCompat &rx, QObject *parent )
+	: QRegularExpressionValidator( rx.regularExpression(), parent )
+{
+}
+#endif
 
 QStringList RegExpCompat::capturedTexts() const
 {

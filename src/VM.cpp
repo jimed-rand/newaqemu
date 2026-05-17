@@ -43,6 +43,8 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QEventLoop>
+#include <QGuiApplication>
+#include <QScreen>
 
 #include "RegExpCompat.h"
 
@@ -7431,8 +7433,8 @@ void Virtual_Machine::Hide_QEMU_Error_Log()
 
 void Virtual_Machine::Show_VM_Load_Window()
 {
-	QDesktopWidget *des_widget = new QDesktopWidget();
-	QRect re = des_widget->screenGeometry( des_widget->primaryScreen() );
+	QScreen *const screen = QGuiApplication::primaryScreen();
+	const QRect screenGeom = screen ? screen->geometry() : QRect( 0, 0, 800, 600 );
 	
 	Load_VM_Window = new QWidget();
 	
@@ -7445,7 +7447,7 @@ void Virtual_Machine::Show_VM_Load_Window()
 	h_layout->addWidget( load_label );
 	Load_VM_Window->setLayout( h_layout );
 	
-	Load_VM_Window->move( re.height() / 2, re.width() / 2 );
+	Load_VM_Window->move( screenGeom.height() / 2, screenGeom.width() / 2 );
 	Load_VM_Window->show();
 }
 
@@ -7467,8 +7469,8 @@ void Virtual_Machine::Hide_VM_Load_Window()
 
 void Virtual_Machine::Show_VM_Save_Window()
 {
-	QDesktopWidget *des_widget = new QDesktopWidget();
-	QRect re = des_widget->screenGeometry( des_widget->primaryScreen() );
+	QScreen *const screen = QGuiApplication::primaryScreen();
+	const QRect screenGeom = screen ? screen->geometry() : QRect( 0, 0, 800, 600 );
 	
 	//Load_VM_Window = new QWidget();
 	Save_VM_Window = new QWidget();
@@ -7482,7 +7484,7 @@ void Virtual_Machine::Show_VM_Save_Window()
 	h_layout->addWidget( save_label );
 	Save_VM_Window->setLayout( h_layout );
 	
-	Save_VM_Window->move( re.height() / 2, re.width() / 2 );
+	Save_VM_Window->move( screenGeom.height() / 2, screenGeom.width() / 2 );
 	Save_VM_Window->show();
 }
 
@@ -7509,7 +7511,7 @@ bool Virtual_Machine::Take_Screenshot( const QString &file_name, int width, int 
 	#ifdef Q_OS_WIN32
 	Sleep( 100 );
 	#else
-	QTest::qWait( 100 );
+	QThread::msleep( 100 );
 	#endif
 
 	QImage im = QImage();
@@ -7528,7 +7530,7 @@ bool Virtual_Machine::Take_Screenshot( const QString &file_name, int width, int 
 		#ifdef Q_OS_WIN32
 		Sleep( 100 );
 		#else
-		QTest::qWait( 100 );
+		QThread::msleep( 100 );
 		#endif
 	}
 	
@@ -8508,44 +8510,6 @@ QString Virtual_Machine::Get_USB_Bus_Address( const QString &id )
 	return QString();
 }
 
-bool Virtual_Machine::Use_USB_Hub() const
-{
-	return USB_Hub;
-}
-
-void Virtual_Machine::Use_USB_Hub( bool use )
-{
-	USB_Hub = use;
-}
-
-int Virtual_Machine::Get_USB_Ports_Count() const
-{
-	return USB_Ports.count();
-}
-
-const VM_USB &Virtual_Machine::Get_USB_Port( int index ) const
-{
-	if( index >= 0 && index < USB_Ports.count() )
-	{
-		return USB_Ports[ index ];
-	}
-	else
-	{
-		AQError( "VM_USB *Virtual_Machine::Get_USB_Port( int index ) const",
-				 "Index Invalid!" );
-		
-		return *(new VM_USB());
-	}
-}
-
-void Virtual_Machine::Set_USB_Port( int index, const VM_USB &u )
-{
-	if( index >= 0 && index < USB_Ports.count() )
-	{
-		USB_Ports[ index ] = VM_USB( u );
-	}
-}
-*/
 void Virtual_Machine::Add_USB_Port( const VM_USB &u )
 {
 	USB_Ports.append( VM_USB(u) );
@@ -9015,7 +8979,7 @@ void Virtual_Machine::Parse_StdOut()
     }
 
 	QStringList splitOutput = convOutput.split( "[K" );
-	QString cleanOutput = splitOutput.last().remove( QRegExp("\[[KD].") );
+	QString cleanOutput = removeWithRegExp( splitOutput.last(), QRegExp( "\[[KD]." ) );
 	
 	emit Clean_Console( cleanOutput );
 	emit Ready_StdOut( cleanOutput );
@@ -9061,7 +9025,7 @@ void Virtual_Machine::Parse_StdErr()
 	{
 		if( ! splitOutput.last().isEmpty() )
 		{
-			QString cleanOutput = splitOutput.last().remove( QRegExp("\[[KD].") );
+			QString cleanOutput = removeWithRegExp( splitOutput.last(), QRegExp( "\[[KD]." ) );
 			emit Clean_Console( cleanOutput.trimmed() );
 			emit Ready_StdErr( cleanOutput.simplified() );
 			Last_Output.append( convOutput.simplified() );
@@ -9265,10 +9229,10 @@ void Virtual_Machine::Set_Passthrough_Profile( const PassthroughProfile &profile
 
 QString Virtual_Machine::Get_Primary_Disk_Path() const
 {
-	if( HDA.Get_Enabled() && ! HDA.Get_Path().isEmpty() )
-		return HDA.Get_Path();
-	if( ! Storage_Devices.isEmpty() && ! Storage_Devices.first().Get_Path().isEmpty() )
-		return Storage_Devices.first().Get_Path();
+	if( HDA.Get_Enabled() && ! HDA.Get_File_Name().isEmpty() )
+		return HDA.Get_File_Name();
+	if( ! Storage_Devices.isEmpty() && ! Storage_Devices.first().Get_File_Path().isEmpty() )
+		return Storage_Devices.first().Get_File_Path();
 	return QString();
 }
 

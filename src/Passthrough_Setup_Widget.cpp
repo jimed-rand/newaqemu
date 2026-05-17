@@ -2,6 +2,7 @@
 
 #include "host/HostHwProbe.h"
 
+#include <QComboBox>
 #include <QClipboard>
 #include <QFormLayout>
 #include <QGroupBox>
